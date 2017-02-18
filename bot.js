@@ -1,26 +1,26 @@
 const builder = require('botbuilder');
 const restify = require('restify');
 
-console.log("API: ", process.env.MOVIE_DB_API_KEY );
+// console.log("API: ", process.env.MOVIE_DB_API_KEY );
 
 const mdb = require('moviedb')(process.env.MOVIE_DB_API_KEY);
 
-const connector = new builder.ConsoleConnector().listen();
-
-
 // Setup Restify Server
-// const server = restify.createServer();
-// server.listen(process.env.port || process.env.PORT || 3978, () => {
-//   console.log('%s listening to %s', server.name, server.url);
-// });
+const server = restify.createServer();
+server.listen(process.env.port || process.env.PORT || 3978, () => {
+  console.log('%s listening to %s', server.name, server.url);
+});
 
 // Create chat bot
-// const connector = new builder.ChatConnector({
-//   appId: process.env.MICROSOFT_APP_ID,
-//   appPassword: process.env.MICROSOFT_APP_PASSWORD,
-// });
+// original
+// const connector = new builder.ConsoleConnector().listen();
+
+const connector = new builder.ChatConnector({
+  appId: process.env.MICROSOFT_APP_ID,
+  appPassword: process.env.MICROSOFT_APP_PASSWORD,
+});
 const bot = new builder.UniversalBot(connector);
-// server.post('/api/messages', connector.listen());
+server.post('/api/messages', connector.listen());
 
 const intents = new builder.IntentDialog();
 bot.dialog('/', intents);
